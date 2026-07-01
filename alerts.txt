@@ -1,0 +1,24 @@
+ALERTS
+2026-03-14T09:13:00,mcompton,impossible_travel,Chicago to Lagos in 11 minutes, implied speed 52404 km/h
+2026-03-14T13:55:00,vp_kpatel,impossible_travel,Denver to Chicago in 40 minutes, implied speed 2216 km/h
+2026-03-14T22:47:00,admin_jdoe,off_hours_admin,admin activity outside business hours at 2026-03-14T22:47:00
+2026-03-14T22:48:00,admin_jdoe,off_hours_admin,admin activity outside business hours at 2026-03-14T22:48:00
+2026-03-14T23:11:00,tkline,brute_force,6 failed logins for tkline within 5 minutes
+2026-03-15T03:31:00,jfoster,password_spray,203.0.113.50 failed logins across 5 users within 10 minutes
+2026-03-15T03:33:00,bnguyen,password_spray,203.0.113.50 failed logins across 5 users within 10 minutes
+2026-03-15T03:35:00,oharris,password_spray,203.0.113.50 failed logins across 5 users within 10 minutes
+2026-03-15T03:37:00,lcruz,password_spray,203.0.113.50 failed logins across 5 users within 10 minutes
+2026-03-15T03:39:00,pmurphy,password_spray,203.0.113.50 failed logins across 5 users within 10 minutes
+
+SCORE
+true positives: 9
+false positives: 1
+false negatives: 1
+precision: 0.90
+recall: 0.90
+
+FALSE POSITIVES
+('2026-03-14T13:55:00', 'vp_kpatel', 'impossible_travel')
+
+FALSE NEGATIVES
+('2026-03-15T09:02:00', 'mcompton', 'privilege_escalation')

@@ -1,0 +1,70 @@
+Project 3 Phase Log
+
+Phase 1 - Setup
+Status: Done
+
+What was done:
+1. Connected to the VM.
+2. Created /home/ubuntu/project3.
+3. Copied the Chapter 3 starter files into /home/ubuntu/project3/code:
+   - auth_events.csv
+   - ground_truth.csv
+   - impossible_travel.py
+4. Counted the input files:
+   - auth_events.csv has 33 lines including the header.
+   - ground_truth.csv has 11 lines including the header.
+
+Phase 2 - Detector Build Plan
+Status: Ready to build by hand
+
+Important note:
+The assignment says AI should not write the detector logic. So the detector code needs to be written by the student. These are the detector pieces that must go into catch.py:
+
+1. Parser
+   - Read CSV rows.
+   - Parse ts, user, event, result, role, country, city, lat, lon, src_ip.
+   - Skip malformed rows without crashing.
+
+2. Impossible travel
+   - Only compare successful login events.
+   - Compare each user's current successful login with their previous successful login.
+   - Use haversine distance.
+   - Default threshold: 900 km/h.
+
+3. Off-hours privileged access
+   - Flag admin activity outside business hours.
+   - Do not flag svc_backup just because it works at night, because it is a service account with a normal off-hours baseline.
+
+4. Brute force
+   - Flag many login failures against one user account in a short period.
+   - In the data, tkline has repeated failures around 23:11.
+
+5. Password spray
+   - Flag one source IP causing failures across many different accounts.
+   - In the data, 203.0.113.50 appears across multiple users around 03:31-03:39.
+
+6. Self-scoring
+   - Load ground_truth.csv.
+   - Compare alert keys against truth keys.
+   - Print precision, recall, false positives, and false negatives.
+
+Phase 3 - Initial Tuning Notes
+Status: Started
+
+Observed from starter data:
+1. Running the provided impossible_travel.py at 900 km/h flags:
+   - mcompton Chicago -> Lagos, 11 minutes, about 52,404 km/h.
+   - vp_kpatel Denver -> Chicago, 40 minutes, about 2,216 km/h.
+2. Ground truth marks mcompton as malicious impossible travel.
+3. Ground truth does not mark vp_kpatel as malicious, so this is likely the false positive to discuss.
+4. svc_backup has a legitimate off-hours login at 02:00, so off-hours logic must avoid flagging service baseline behavior.
+5. admin_jdoe has suspicious off-hours events at 22:47 and 22:48.
+6. mcompton has a privilege escalation event at 09:02 on 2026-03-15, but that is Medium tier.
+
+Next tasks:
+1. Student writes catch.py detector logic by hand.
+2. Run:
+   python3 catch.py code/auth_events.csv --truth code/ground_truth.csv
+3. Tune thresholds and allow-list decisions.
+4. Save final output as alerts.txt or alerts.csv.
+5. Write README.txt and REPORT.docx after the run is stable.
